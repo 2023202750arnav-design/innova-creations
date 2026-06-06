@@ -121,7 +121,12 @@ def create_square(source: Path, box: tuple[int, int, int, int], destination: Pat
         crop = image.convert("RGB").crop(box)
         draw = ImageDraw.Draw(crop)
         corner_fill = crop.getpixel((min(crop.width - 1, int(crop.width * 0.32)), min(crop.height - 1, 8)))
-        draw.rectangle((0, 0, int(crop.width * 0.2), int(crop.height * 0.16)), fill=corner_fill)
+        # Cover top-left and top-right corners (removes page numbers/prefixes)
+        draw.rectangle((0, 0, int(crop.width * 0.24), int(crop.height * 0.16)), fill=corner_fill)
+        draw.rectangle((int(crop.width * 0.76), 0, crop.width, int(crop.height * 0.16)), fill=corner_fill)
+        # Cover bottom area (removes SKUs, prices, specifications)
+        draw.rectangle((0, int(crop.height * 0.82), crop.width, crop.height), fill=corner_fill)
+        
         crop = ImageOps.contain(crop, (1080, 1080), Image.Resampling.LANCZOS)
         crop = ImageEnhance.Contrast(crop).enhance(1.03)
         canvas = Image.new("RGB", (1200, 1200), (246, 244, 239))
