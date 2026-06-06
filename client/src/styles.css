@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary-gold: #C9A84C;
+  --color-gold-light: #E8D5A3;
+  --color-gold-dark: #9A7B2C;
+  --color-white: #FFFFFF;
+  --color-off-white: #FAF8F3;
+  --color-cream: #F5EDD8;
+  --color-charcoal: #1A1A1A;
+  --color-dark-gray: #2D2D2D;
+  --color-mid-gray: #6B6B6B;
+  --color-light-gray: #E8E8E8;
+  --color-royal-burgundy: #5C1B33;
+  --color-deep-navy: #0D1B2A;
+}
+
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--color-off-white); color: var(--color-charcoal); font-family: Jost, sans-serif; }
+button, a, input, select, textarea { outline-color: var(--color-primary-gold); }
+.grain {
+  background-image: radial-gradient(circle at 20% 20%, rgba(255,255,255,.28), transparent 14%), radial-gradient(circle at 80% 10%, rgba(201,168,76,.26), transparent 16%), linear-gradient(rgba(13,27,42,.58), rgba(13,27,42,.38));
+}
+.ornament:before, .ornament:after { content: ""; display: inline-block; width: 80px; height: 1px; background: #C9A84C; margin: 0 16px 6px; }
+.shimmer { background: linear-gradient(90deg, #f4ead0 0%, #fff9ec 50%, #f4ead0 100%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+@keyframes shimmer { to { background-position: -200% 0; } }
+.glass { background: rgba(250,248,243,.82); backdrop-filter: blur(18px); border: 1px solid rgba(201,168,76,.28); }
+.gold-btn { background: #C9A84C; color: #1A1A1A; border: 1px solid #9A7B2C; transition: transform .2s, box-shadow .2s; }
+.gold-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(201,168,76,.35); }
+.card-hover { transition: transform .25s ease, box-shadow .25s ease; }
+.card-hover:hover { transform: translateY(-8px); box-shadow: 0 24px 70px rgba(201,168,76,.28); }

@@ -1,0 +1,9 @@
+<h1>Thank you for your order, {{customerName}}</h1>
+<p>Your Innova Creations order <strong>{{orderNumber}}</strong> has been received.</p>
+<p>Estimated delivery: {{estimatedDelivery}}</p>
+<table>
+  {{#each items}}
+    <tr><td>{{name}}</td><td>{{quantity}}</td><td>{{subtotal}}</td></tr>
+  {{/each}}
+</table>
+<p>Total: {{total}}</p>
