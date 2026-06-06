@@ -27,27 +27,32 @@ async function runE2ETest() {
   });
 
   const page = await browser.newPage();
+  page.on("console", (msg) => console.log("BROWSER LOG:", msg.text()));
+  page.on("pageerror", (err) => console.error("BROWSER ERROR:", err.toString()));
 
   try {
-    // --- 1. NAVIGATE TO LOGIN ---
-    console.log("Navigating to login page...");
-    await page.goto(`${CLIENT_URL}/login`, { waitUntil: "networkidle2" });
-    await page.screenshot({ path: path.join(screenshotDir, "step1_login_page.png") });
-    console.log(green("✓ Reached Login Page."));
+    // --- 1. NAVIGATE TO REGISTER ---
+    console.log("Navigating to register page...");
+    await page.goto(`${CLIENT_URL}/register`, { waitUntil: "networkidle2" });
+    await page.screenshot({ path: path.join(screenshotDir, "step1_register_page.png") });
+    console.log(green("✓ Reached Register Page."));
 
-    // --- 2. PERFORM LOGIN ---
-    console.log("Filling login credentials...");
-    await page.type('input[name="email"]', "admin@innovacreations.com");
-    await page.type('input[name="password"]', "Admin@1234");
-    await page.screenshot({ path: path.join(screenshotDir, "step2_credentials_filled.png") });
+    // --- 2. PERFORM REGISTRATION ---
+    console.log("Filling registration details...");
+    await page.waitForSelector('input[name="name"]', { timeout: 5000 });
+    const uniqueEmail = `customer_${Date.now()}@example.com`;
+    await page.type('input[name="name"]', "John Doe");
+    await page.type('input[name="email"]', uniqueEmail);
+    await page.type('input[name="password"]', "password123");
+    await page.screenshot({ path: path.join(screenshotDir, "step2_registration_filled.png") });
 
-    console.log("Clicking Login...");
+    console.log("Clicking Register...");
     await Promise.all([
       page.click('button[type="submit"]'),
       page.waitForNavigation({ waitUntil: "networkidle2" }),
     ]);
-    await page.screenshot({ path: path.join(screenshotDir, "step3_logged_in_dashboard.png") });
-    console.log(green("✓ Successfully logged in and redirected to Account profile."));
+    await page.screenshot({ path: path.join(screenshotDir, "step3_registered_dashboard.png") });
+    console.log(green(`✓ Successfully registered customer ${uniqueEmail} and redirected to Account profile.`));
 
     // --- 3. BROWSE PRODUCTS ---
     console.log("Navigating to products catalog...");
@@ -180,6 +185,13 @@ async function runE2ETest() {
 
   } catch (error) {
     console.error("Test failed with error:", error);
+    console.log("Current page URL:", page.url());
+    try {
+      const bodyHTML = await page.evaluate(() => document.body.innerHTML);
+      console.log("Current page body HTML:\n", bodyHTML);
+    } catch (e) {
+      console.error("Could not retrieve body HTML:", e);
+    }
     await page.screenshot({ path: path.join(screenshotDir, "step_failed_error.png") });
     process.exit(1);
   } finally {

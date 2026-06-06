@@ -28,6 +28,9 @@ services:
       - redis
     ports:
       - "5002:5002"
+    volumes:
+      - ./server:/app
+      - /app/node_modules
   client:
     build: ./client
     restart: unless-stopped
@@ -37,5 +40,8 @@ services:
       - server
     ports:
       - "5173:5173"
+    volumes:
+      - ./client:/app
+      - /app/node_modules
 volumes:
   postgres_data:

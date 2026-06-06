@@ -89,7 +89,7 @@ function fallbackProducts(query: express.Request["query"]) {
   return result;
 }
 
-api.post("/auth/register", authLimiter, body("email").isEmail(), body("password").isStrongPassword(), body("name").isLength({ min: 2 }), validate, async (req, res, next) => {
+api.post("/auth/register", authLimiter, body("email").isEmail(), body("password").isLength({ min: 8 }), body("name").isLength({ min: 2 }), validate, async (req, res, next) => {
   try {
     const email = String(req.body.email).trim().toLowerCase();
     const exists = await prisma.user.findUnique({ where: { email } });
@@ -160,7 +160,7 @@ api.post("/auth/refresh-token", (req, res) => {
   try { const decoded = jwt.verify(req.cookies.refreshToken, refreshSecret) as any; const tokens = sign({ id: decoded.sub, role: decoded.role }); res.cookie("accessToken", tokens.accessToken, { httpOnly: true, sameSite: "lax" }); ok(res, tokens); } catch { res.status(401).json({ message: "Invalid refresh token" }); }
 });
 api.post("/auth/forgot-password", body("email").isEmail(), validate, (_req, res) => ok(res, { message: "OTP sent if account exists" }));
-api.post("/auth/reset-password", body("otp").isLength({ min: 4 }), body("password").isStrongPassword(), validate, (_req, res) => ok(res, { message: "Password reset" }));
+api.post("/auth/reset-password", body("otp").isLength({ min: 4 }), body("password").isLength({ min: 8 }), validate, (_req, res) => ok(res, { message: "Password reset" }));
 api.get("/auth/me", auth, async (req, res, next) => {
   try {
     const user = await prisma.user.findUnique({
