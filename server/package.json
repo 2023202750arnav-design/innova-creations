@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "tsx watch src/app.ts",
     "prebuild": "prisma generate",
+    "prelint": "prisma generate",
     "build": "tsc",
     "start": "node dist/app.js",
     "lint": "tsc --noEmit",

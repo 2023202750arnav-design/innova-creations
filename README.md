@@ -39,7 +39,7 @@ docker compose up --build
 ## Default Admin
 
 - Email: `admin@innovacreations.com`
-- Password: `Admin@1234`
+- Password: `Admin@Innova2026`
 
 ## Stripe Test Cards
 
