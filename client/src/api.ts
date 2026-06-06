@@ -4,7 +4,7 @@ import { catalogueCategories, catalogueProducts } from "./catalogue";
 
 export const api = axios.create({ baseURL: import.meta.env.VITE_API_URL || "http://localhost:5002/api/v1", withCredentials: true });
 const DEFAULT_PRODUCT_LIMIT = 24;
-const MAX_PRODUCT_LIMIT = 100;
+export const MAX_PRODUCT_LIMIT = 100;
 
 type ApiProduct = Partial<Omit<Product, "category">> & {
   sku?: string;
@@ -76,7 +76,7 @@ const normalizedCatalogueBySlug = new Map(normalizedCatalogueProducts.map((produ
 
 function getCappedLimit(limitValue: unknown) {
   const parsed = Number(limitValue);
-  if (!Number.isFinite(parsed) || parsed <= 0) return DEFAULT_PRODUCT_LIMIT;
+  if (!Number.isInteger(parsed) || parsed <= 0) return DEFAULT_PRODUCT_LIMIT;
   return Math.min(MAX_PRODUCT_LIMIT, Math.floor(parsed));
 }
 

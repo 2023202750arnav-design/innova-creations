@@ -12,6 +12,7 @@ import Stripe from "stripe";
 import multer from "multer";
 import winston from "winston";
 import { PrismaClient } from "@prisma/client";
+import type { Prisma, Product } from "@prisma/client";
 import { reviews } from "./fixtures.js";
 import { catalogueCategories, catalogueProducts } from "./catalogue.js";
 
@@ -38,6 +39,7 @@ app.use("/api/v1/payment/webhook", express.raw({ type: "application/json" }));
 app.use(express.json({ limit: "1mb" }));
 
 const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 5, standardHeaders: true, legacyHeaders: false });
+const adminLimiter = rateLimit({ windowMs: 60 * 1000, limit: 120, standardHeaders: true, legacyHeaders: false });
 const accessSecret = process.env.JWT_ACCESS_SECRET || "dev_access_secret";
 const refreshSecret = process.env.JWT_REFRESH_SECRET || "dev_refresh_secret";
 
@@ -329,18 +331,18 @@ api.post(
       const quantities = requestedItems.map((item) => Math.max(1, Math.min(25, Number(item.quantity || 1))));
       const skuIds = [...new Set(requestedItems.map((item) => item.sku).filter((sku): sku is string => Boolean(sku)))];
       const productIds = [...new Set(requestedItems.map((item) => item.productId).filter((id): id is string => Boolean(id)).map(String))];
-      const whereOr: Array<Record<string, unknown>> = [];
+      const whereOr: Prisma.ProductWhereInput[] = [];
       if (skuIds.length) whereOr.push({ sku: { in: skuIds } });
       if (productIds.length) whereOr.push({ id: { in: productIds } });
       if (!whereOr.length) return res.status(422).json({ message: "One or more products are unavailable" });
       const fetchedProducts = await prisma.product.findMany({ where: { OR: whereOr } });
-      const productsBySku = new Map(
+      const productsBySku = new Map<string, Product>(
         fetchedProducts
-          .filter((product) => Boolean(product.sku))
-          .map((product) => [String(product.sku), product]),
+          .filter((product) => product.sku != null)
+          .map((product) => [String(product.sku), product] as const),
       );
-      const productsById = new Map(fetchedProducts.map((product) => [product.id, product]));
-      const products = requestedItems.map((item) => (
+      const productsById = new Map<string, Product>(fetchedProducts.map((product) => [product.id, product] as const));
+      const products: Array<Product | undefined> = requestedItems.map((item) => (
         item.sku
           ? productsBySku.get(String(item.sku))
           : productsById.get(String(item.productId))
@@ -352,7 +354,7 @@ api.post(
       const shippingCost = subtotal >= 5000 ? 0 : 99;
       const tax = Math.round(subtotal * 0.18);
       const orderNumber = `INN-${new Date().getFullYear()}-${Date.now().toString().slice(-10)}`;
-      const order = await prisma.$transaction(async (tx) => {
+      const order = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
         const created = await tx.order.create({
           data: {
             userId: optionalUserId(req),
@@ -474,6 +476,7 @@ api.put("/orders/:orderId/cancel", auth, async (req, res, next) => {
 });
 api.get(
   "/admin/orders",
+  adminLimiter,
   auth,
   admin,
   query("page").optional().isInt({ min: 1 }),
@@ -521,6 +524,7 @@ api.delete("/reviews/:reviewId", auth, (req, res) => ok(res, { deleted: req.para
 
 api.get(
   "/admin/users",
+  adminLimiter,
   auth,
   admin,
   query("page").optional().isInt({ min: 1 }),

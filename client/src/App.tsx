@@ -10,7 +10,7 @@ import { z } from "zod";
 import toast from "react-hot-toast";
 import { Heart, Search, ShoppingBag, User, Menu, X, Star, ShieldCheck, Truck, RefreshCw, Lock, Plus, Minus, Trash2, Settings, BarChart3, Package, Users, Tags, MessageCircle } from "lucide-react";
 import { Category, categories, heroSlides, inr, Product } from "./data";
-import { createOrder, fetchCategories, fetchMyOrders, fetchOrder, fetchProduct, fetchProducts, loginCustomer, registerCustomer } from "./api";
+import { createOrder, fetchCategories, fetchMyOrders, fetchOrder, fetchProduct, fetchProducts, loginCustomer, MAX_PRODUCT_LIMIT, registerCustomer } from "./api";
 import { useShop } from "./store";
 
 function Seo({ title, description }: { title: string; description: string }) {
@@ -103,7 +103,7 @@ function Listing() {
   const [params] = useSearchParams();
   const [sort, setSort] = useState("Featured");
   const [list, setList] = useState(false);
-  const { data = [] } = useQuery<Product[]>({ queryKey: ["products", slug], queryFn: () => fetchProducts({ category: slug, limit: 100 }) });
+  const { data = [] } = useQuery<Product[]>({ queryKey: ["products", slug], queryFn: () => fetchProducts({ category: slug, limit: MAX_PRODUCT_LIMIT }) });
   const q = params.get("q")?.toLowerCase();
   const newOnly = params.get("new") === "true";
   const saleOnly = params.get("sale") === "true";

@@ -531,7 +531,9 @@ async function main() {
       }),
     ),
   );
-  const categoryMap = Object.fromEntries(seededCategories.map((category) => [category.slug, category.id]));
+  const categoryMap = Object.fromEntries(
+    seededCategories.map((category: { slug: string; id: string }) => [category.slug, category.id]),
+  );
   console.log(`Seeded categories: ${seededCategories.length}`);
 
   const passwordHash = await bcrypt.hash("Admin@Innova2026", 12);
@@ -620,7 +622,7 @@ async function main() {
   console.log(`   Banners: ${banners.length}`);
   console.log("   Admin user: admin@innovacreations.com");
   console.log("   Product counts by category:");
-  cats.forEach((category) => {
+  cats.forEach((category: { name: string; slug: string; _count: { products: number } }) => {
     console.log(`   - ${category.name} (${category.slug}): ${category._count.products}`);
   });
   console.log(`   WLN1 price check: ${wln1?.sku} price=${wln1?.price} compareAtPrice=${wln1?.compareAtPrice}`);
