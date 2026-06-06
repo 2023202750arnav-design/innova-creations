@@ -33,6 +33,30 @@ export function ProductDetail() {
     }
   }, [product]);
 
+  const handleFinishChange = (finish: string) => {
+    setSelectedFinish(finish);
+    if (product && product.images && product.images.length > 1) {
+      if (finish !== product.finish) {
+        setImg(1);
+      } else {
+        setImg(0);
+      }
+    }
+  };
+
+  const handleSizeChange = (size: string) => {
+    setSelectedSize(size);
+    if (product && product.images && product.images.length > 1) {
+      const sizes = product.variants.map((v) => v.value);
+      const sizeIndex = sizes.indexOf(size);
+      if (sizeIndex > 0) {
+        setImg(1);
+      } else {
+        setImg(0);
+      }
+    }
+  };
+
   const { data: related = [] } = useQuery<Product[]>({
     queryKey: ["related", product?.category],
     queryFn: () => fetchProducts({ category: product?.category, limit: 4 }),
@@ -75,7 +99,21 @@ export function ProductDetail() {
             {product.images.map((src, i) => (
               <button
                 key={src}
-                onClick={() => setImg(i)}
+                onClick={() => {
+                  setImg(i);
+                  if (i === 0) {
+                    setSelectedFinish(product.finish || "Gold");
+                    setSelectedSize(product.variants?.[0]?.value || "Standard");
+                  } else if (i === 1) {
+                    const finishes = [product.finish, "Gold", "Chrome", "Black"].filter(Boolean).slice(0, 4);
+                    if (finishes.length > 1) {
+                      setSelectedFinish(finishes[1]);
+                    }
+                    if (product.variants && product.variants.length > 1) {
+                      setSelectedSize(product.variants[1].value);
+                    }
+                  }
+                }}
                 className={`h-20 w-20 overflow-hidden rounded border bg-cream p-1 ${
                   img === i ? "border-gold border-2" : "border-gold/40"
                 }`}
@@ -115,7 +153,7 @@ export function ProductDetail() {
                   const isSelected = selectedFinish === x;
                   return (
                     <button
-                      onClick={() => setSelectedFinish(x)}
+                      onClick={() => handleFinishChange(x)}
                       className={`rounded border px-4 py-2 transition ${
                         isSelected
                           ? "border-gold bg-gold text-white font-semibold shadow-sm"
@@ -134,7 +172,7 @@ export function ProductDetail() {
                 const isSelected = selectedSize === v.value;
                 return (
                   <button
-                    onClick={() => setSelectedSize(v.value)}
+                    onClick={() => handleSizeChange(v.value)}
                     className={`rounded border px-4 py-2 transition ${
                       isSelected
                         ? "border-gold bg-gold text-white font-semibold shadow-sm"

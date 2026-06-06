@@ -148,7 +148,7 @@ async function runTests() {
   try {
     const logRes = await axios.post(`${API_BASE}/auth/login`, {
       email: "admin@innovacreations.com",
-      password: "Admin@1234",
+      password: "Admin@Innova2026",
     });
     if (logRes.status === 200 && logRes.data.user.role === "ADMIN") {
       record("API POST: /auth/login (Admin)", true);

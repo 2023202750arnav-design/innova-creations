@@ -2396,7 +2396,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Rose Gold",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-9-1.jpg"
+      "/catalog-products/products/innova-pcl-9-1.jpg",
+      "/catalog-products/products/innova-pcl-9-2.jpg"
     ],
     "variants": [
       {
@@ -2434,7 +2435,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Black",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-10-1.jpg"
+      "/catalog-products/products/innova-pcl-10-1.jpg",
+      "/catalog-products/products/innova-pcl-10-2.jpg"
     ],
     "variants": [
       {
@@ -2472,7 +2474,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Gold",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-11-1.jpg"
+      "/catalog-products/products/innova-pcl-11-1.jpg",
+      "/catalog-products/products/innova-pcl-11-2.jpg"
     ],
     "variants": [
       {
@@ -2510,7 +2513,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Matte Black",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-12-1.jpg"
+      "/catalog-products/products/innova-pcl-12-1.jpg",
+      "/catalog-products/products/innova-pcl-12-2.jpg"
     ],
     "variants": [
       {
@@ -2548,7 +2552,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Black",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-13-1.jpg"
+      "/catalog-products/products/innova-pcl-13-1.jpg",
+      "/catalog-products/products/innova-pcl-13-2.jpg"
     ],
     "variants": [
       {
@@ -2586,7 +2591,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Gold",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-26-1.jpg"
+      "/catalog-products/products/innova-pcl-26-1.jpg",
+      "/catalog-products/products/innova-pcl-26-2.jpg"
     ],
     "variants": [
       {
@@ -2624,7 +2630,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Black",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-27-1.jpg"
+      "/catalog-products/products/innova-pcl-27-1.jpg",
+      "/catalog-products/products/innova-pcl-27-2.jpg"
     ],
     "variants": [
       {
@@ -2662,7 +2669,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Gold",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-28-1.jpg"
+      "/catalog-products/products/innova-pcl-28-1.jpg",
+      "/catalog-products/products/innova-pcl-28-2.jpg"
     ],
     "variants": [
       {
@@ -2700,7 +2708,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Gold",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-29-1.jpg"
+      "/catalog-products/products/innova-pcl-29-1.jpg",
+      "/catalog-products/products/innova-pcl-29-2.jpg"
     ],
     "variants": [
       {
@@ -2738,7 +2747,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Premium",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-46-1.jpg"
+      "/catalog-products/products/innova-pcl-46-1.jpg",
+      "/catalog-products/products/innova-pcl-46-2.jpg"
     ],
     "variants": [
       {
@@ -2776,7 +2786,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Black",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-47-1.jpg"
+      "/catalog-products/products/innova-pcl-47-1.jpg",
+      "/catalog-products/products/innova-pcl-47-2.jpg"
     ],
     "variants": [
       {
@@ -2814,7 +2825,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Premium",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-48-1.jpg"
+      "/catalog-products/products/innova-pcl-48-1.jpg",
+      "/catalog-products/products/innova-pcl-48-2.jpg"
     ],
     "variants": [
       {
@@ -2852,7 +2864,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Grey",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-49-1.jpg"
+      "/catalog-products/products/innova-pcl-49-1.jpg",
+      "/catalog-products/products/innova-pcl-49-2.jpg"
     ],
     "variants": [
       {
@@ -2890,7 +2903,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Chrome",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-66-1.jpg"
+      "/catalog-products/products/innova-pcl-66-1.jpg",
+      "/catalog-products/products/innova-pcl-66-2.jpg"
     ],
     "variants": [
       {
@@ -2929,7 +2943,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Gold",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-67-1.jpg"
+      "/catalog-products/products/innova-pcl-67-1.jpg",
+      "/catalog-products/products/innova-pcl-67-2.jpg"
     ],
     "variants": [
       {
@@ -2967,7 +2982,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Chrome",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-68-1.jpg"
+      "/catalog-products/products/innova-pcl-68-1.jpg",
+      "/catalog-products/products/innova-pcl-68-2.jpg"
     ],
     "variants": [
       {
@@ -3005,7 +3021,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Premium",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-69-1.jpg"
+      "/catalog-products/products/innova-pcl-69-1.jpg",
+      "/catalog-products/products/innova-pcl-69-2.jpg"
     ],
     "variants": [
       {
@@ -3043,7 +3060,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Gold",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-70-1.jpg"
+      "/catalog-products/products/innova-pcl-70-1.jpg",
+      "/catalog-products/products/innova-pcl-70-2.jpg"
     ],
     "variants": [
       {
@@ -3081,7 +3099,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Premium",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-71-1.jpg"
+      "/catalog-products/products/innova-pcl-71-1.jpg",
+      "/catalog-products/products/innova-pcl-71-2.jpg"
     ],
     "variants": [
       {
@@ -3119,7 +3138,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Premium",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-72-1.jpg"
+      "/catalog-products/products/innova-pcl-72-1.jpg",
+      "/catalog-products/products/innova-pcl-72-2.jpg"
     ],
     "variants": [
       {
@@ -3157,7 +3177,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Gold",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-73-1.jpg"
+      "/catalog-products/products/innova-pcl-73-1.jpg",
+      "/catalog-products/products/innova-pcl-73-2.jpg"
     ],
     "variants": [
       {
@@ -3195,7 +3216,8 @@ export const catalogueProducts: Product[] = [
     "finish": "White",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-94-1.jpg"
+      "/catalog-products/products/innova-pcl-94-1.jpg",
+      "/catalog-products/products/innova-pcl-94-2.jpg"
     ],
     "variants": [
       {
@@ -3233,7 +3255,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Black",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-95-1.jpg"
+      "/catalog-products/products/innova-pcl-95-1.jpg",
+      "/catalog-products/products/innova-pcl-95-2.jpg"
     ],
     "variants": [
       {
@@ -3271,7 +3294,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Rose Gold",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-96-1.jpg"
+      "/catalog-products/products/innova-pcl-96-1.jpg",
+      "/catalog-products/products/innova-pcl-96-2.jpg"
     ],
     "variants": [
       {
@@ -3309,7 +3333,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Premium",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-97-1.jpg"
+      "/catalog-products/products/innova-pcl-97-1.jpg",
+      "/catalog-products/products/innova-pcl-97-2.jpg"
     ],
     "variants": [
       {
@@ -3347,7 +3372,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Gold",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-118-1.jpg"
+      "/catalog-products/products/innova-pcl-118-1.jpg",
+      "/catalog-products/products/innova-pcl-118-2.jpg"
     ],
     "variants": [
       {
@@ -3385,7 +3411,8 @@ export const catalogueProducts: Product[] = [
     "finish": "White",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-119-1.jpg"
+      "/catalog-products/products/innova-pcl-119-1.jpg",
+      "/catalog-products/products/innova-pcl-119-2.jpg"
     ],
     "variants": [
       {
@@ -3423,7 +3450,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Gold",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-120-1.jpg"
+      "/catalog-products/products/innova-pcl-120-1.jpg",
+      "/catalog-products/products/innova-pcl-120-2.jpg"
     ],
     "variants": [
       {
@@ -3462,7 +3490,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Gold",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-121-1.jpg"
+      "/catalog-products/products/innova-pcl-121-1.jpg",
+      "/catalog-products/products/innova-pcl-121-2.jpg"
     ],
     "variants": [
       {
@@ -3500,7 +3529,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Chrome",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-130-1.jpg"
+      "/catalog-products/products/innova-pcl-130-1.jpg",
+      "/catalog-products/products/innova-pcl-130-2.jpg"
     ],
     "variants": [
       {
@@ -3538,7 +3568,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Silver",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-131-1.jpg"
+      "/catalog-products/products/innova-pcl-131-1.jpg",
+      "/catalog-products/products/innova-pcl-131-2.jpg"
     ],
     "variants": [
       {
@@ -3576,7 +3607,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Black",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-132-1.jpg"
+      "/catalog-products/products/innova-pcl-132-1.jpg",
+      "/catalog-products/products/innova-pcl-132-2.jpg"
     ],
     "variants": [
       {
@@ -3614,7 +3646,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Chrome",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-133-1.jpg"
+      "/catalog-products/products/innova-pcl-133-1.jpg",
+      "/catalog-products/products/innova-pcl-133-2.jpg"
     ],
     "variants": [
       {
@@ -3688,7 +3721,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Premium",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-ncp38-1.jpg"
+      "/catalog-products/products/innova-ncp38-1.jpg",
+      "/catalog-products/products/innova-ncp38-2.jpg"
     ],
     "variants": [
       {
@@ -3725,7 +3759,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Premium",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-ncp39-1.jpg"
+      "/catalog-products/products/innova-ncp39-1.jpg",
+      "/catalog-products/products/innova-ncp39-2.jpg"
     ],
     "variants": [
       {
@@ -3762,7 +3797,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Premium",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-ncp40-1.jpg"
+      "/catalog-products/products/innova-ncp40-1.jpg",
+      "/catalog-products/products/innova-ncp40-2.jpg"
     ],
     "variants": [
       {
@@ -3799,7 +3835,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Premium",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-ncp41-1.jpg"
+      "/catalog-products/products/innova-ncp41-1.jpg",
+      "/catalog-products/products/innova-ncp41-2.jpg"
     ],
     "variants": [
       {
@@ -3836,7 +3873,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Premium",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-ncp42-1.jpg"
+      "/catalog-products/products/innova-ncp42-1.jpg",
+      "/catalog-products/products/innova-ncp42-2.jpg"
     ],
     "variants": [
       {
@@ -3874,7 +3912,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Premium",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-ncp43-1.jpg"
+      "/catalog-products/products/innova-ncp43-1.jpg",
+      "/catalog-products/products/innova-ncp43-2.jpg"
     ],
     "variants": [
       {
@@ -3912,7 +3951,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Premium",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-ncp69-1.jpg"
+      "/catalog-products/products/innova-ncp69-1.jpg",
+      "/catalog-products/products/innova-ncp69-2.jpg"
     ],
     "variants": [
       {
@@ -3949,7 +3989,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Premium",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-ncp70-1.jpg"
+      "/catalog-products/products/innova-ncp70-1.jpg",
+      "/catalog-products/products/innova-ncp70-2.jpg"
     ],
     "variants": [
       {
@@ -3986,7 +4027,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Gold",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-ncp71-1.jpg"
+      "/catalog-products/products/innova-ncp71-1.jpg",
+      "/catalog-products/products/innova-ncp71-2.jpg"
     ],
     "variants": [
       {
@@ -4024,7 +4066,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Premium",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-vermont-01-1.jpg"
+      "/catalog-products/products/innova-vermont-01-1.jpg",
+      "/catalog-products/products/innova-vermont-01-2.jpg"
     ],
     "variants": [
       {
@@ -4062,7 +4105,8 @@ export const catalogueProducts: Product[] = [
     "finish": "Premium",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-balmoral-1.jpg"
+      "/catalog-products/products/innova-balmoral-1.jpg",
+      "/catalog-products/products/innova-balmoral-2.jpg"
     ],
     "variants": [
       {

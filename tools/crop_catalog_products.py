@@ -128,7 +128,9 @@ def create_square(source: Path, box: tuple[int, int, int, int], destination: Pat
         draw.rectangle((0, int(crop.height * 0.82), crop.width, crop.height), fill=corner_fill)
         
         crop = ImageOps.contain(crop, (1080, 1080), Image.Resampling.LANCZOS)
-        crop = ImageEnhance.Contrast(crop).enhance(1.03)
+        crop = ImageEnhance.Contrast(crop).enhance(1.05)
+        crop = ImageEnhance.Sharpness(crop).enhance(1.35)
+        crop = ImageEnhance.Color(crop).enhance(1.05)
         canvas = Image.new("RGB", (1200, 1200), (246, 244, 239))
         canvas.paste(crop, ((1200 - crop.width) // 2, (1200 - crop.height) // 2))
         canvas.save(destination, "JPEG", quality=92, optimize=True, progressive=True)
@@ -165,8 +167,132 @@ def create_quadrant_product(source: Path, quadrant: str, destination: Path) -> N
         draw.rectangle((0, 0, int(tile.width * 0.23), int(tile.height * 0.2)), fill=corner)
 
         tile = ImageOps.contain(tile, (1080, 1080), Image.Resampling.LANCZOS)
+        tile = ImageEnhance.Contrast(tile).enhance(1.05)
+        tile = ImageEnhance.Sharpness(tile).enhance(1.35)
+        tile = ImageEnhance.Color(tile).enhance(1.05)
         canvas = Image.new("RGB", (1200, 1200), (246, 244, 239))
         canvas.paste(tile, ((1200 - tile.width) // 2, (1200 - tile.height) // 2))
+        canvas.save(destination, "JPEG", quality=92, optimize=True, progressive=True)
+
+
+CUSTOM_MAP = {
+    "innova-ncp37": {
+        "source": "p47_i02_1800x1200.png",
+        "crops": [
+            ("-1.jpg", (200, 60, 1450, 450), False)
+        ]
+    },
+    "innova-ncp38": {
+        "source": "p47_i04_1800x1200.png",
+        "crops": [
+            ("-1.jpg", (0, 0, 900, 980), False),
+            ("-2.jpg", (900, 0, 1800, 980), False)
+        ]
+    },
+    "innova-ncp39": {
+        "source": "p48_i01_1800x1200.jpg",
+        "crops": [
+            ("-1.jpg", (0, 0, 900, 980), False),
+            ("-2.jpg", (900, 0, 1800, 980), False)
+        ]
+    },
+    "innova-ncp40": {
+        "source": "p48_i03_1800x1200.jpg",
+        "crops": [
+            ("-1.jpg", (0, 0, 900, 980), False),
+            ("-2.jpg", (900, 0, 1800, 980), False)
+        ]
+    },
+    "innova-ncp41": {
+        "source": "p49_i01_1800x1200.jpg",
+        "crops": [
+            ("-1.jpg", (900, 520, 1800, 920), False),
+            ("-2.jpg", (900, 0, 1800, 980), False)
+        ],
+        "alt_sources": {
+            "-2.jpg": "p49_i02_1800x1200.jpg"
+        }
+    },
+    "innova-ncp42": {
+        "source": "p49_i02_1800x1200.jpg",
+        "crops": [
+            ("-1.jpg", (0, 0, 900, 980), False),
+            ("-2.jpg", (900, 0, 1800, 980), False)
+        ]
+    },
+    "innova-ncp43": {
+        "source": "p50_i01_1800x1200.jpg",
+        "crops": [
+            ("-1.jpg", (0, 520, 900, 960), False),
+            ("-2.jpg", (900, 520, 1800, 960), False)
+        ]
+    },
+    "innova-ncp69": {
+        "source": "p50_i07_1800x1200.jpg",
+        "crops": [
+            ("-1.jpg", (0, 0, 900, 1020), False),
+            ("-2.jpg", (900, 0, 1800, 1020), False)
+        ]
+    },
+    "innova-ncp70": {
+        "source": "p51_i01_1800x1200.jpg",
+        "crops": [
+            ("-1.jpg", (0, 0, 900, 1020), False),
+            ("-2.jpg", (900, 0, 1800, 1020), False)
+        ]
+    },
+    "innova-ncp71": {
+        "source": "p51_i03_1800x1200.jpg",
+        "crops": [
+            ("-1.jpg", (0, 0, 900, 1020), False),
+            ("-2.jpg", (900, 0, 1800, 1020), False)
+        ]
+    },
+    "innova-vermont-01": {
+        "source": "p61_i01_1800x1200.jpg",
+        "crops": [
+            ("-1.jpg", (0, 0, 900, 1200), True),
+            ("-2.jpg", (900, 0, 1800, 1200), True)
+        ]
+    },
+    "innova-balmoral": {
+        "source": "p61_i02_1800x1200.jpg",
+        "crops": [
+            ("-1.jpg", (0, 0, 900, 620), True),
+            ("-2.jpg", (900, 0, 1800, 620), True)
+        ]
+    }
+}
+
+
+def create_custom_square(source: Path, box: tuple[int, int, int, int], destination: Path, mask_top_left: bool) -> None:
+    with Image.open(source) as image:
+        crop = image.convert("RGB").crop(box)
+        
+        # Detect background color dynamically
+        samples = [
+            crop.getpixel((5, 5)),
+            crop.getpixel((crop.width - 6, 5)),
+            crop.getpixel((crop.width // 2, 5)),
+        ]
+        r = int(sum(s[0] for s in samples) / len(samples))
+        g = int(sum(s[1] for s in samples) / len(samples))
+        b = int(sum(s[2] for s in samples) / len(samples))
+        bg_color = (r, g, b)
+        
+        if r > 230 and g > 230 and b > 230:
+            bg_color = (246, 244, 239)
+            
+        if mask_top_left:
+            draw = ImageDraw.Draw(crop)
+            draw.rectangle((0, 0, min(crop.width - 1, 350), min(crop.height - 1, 120)), fill=bg_color)
+            
+        crop = ImageOps.contain(crop, (1080, 1080), Image.Resampling.LANCZOS)
+        crop = ImageEnhance.Contrast(crop).enhance(1.05)
+        crop = ImageEnhance.Sharpness(crop).enhance(1.35)
+        crop = ImageEnhance.Color(crop).enhance(1.05)
+        canvas = Image.new("RGB", (1200, 1200), bg_color)
+        canvas.paste(crop, ((1200 - crop.width) // 2, (1200 - crop.height) // 2))
         canvas.save(destination, "JPEG", quality=92, optimize=True, progressive=True)
 
 
@@ -183,6 +309,21 @@ def main() -> None:
         sku, category, primary_source, _secondary_source = line.split("\t")
         if category in {"wall-lights", "pendant-lights"}:
             continue
+            
+        # Check if the product has a custom crop configuration
+        if sku.lower() in CUSTOM_MAP:
+            config = CUSTOM_MAP[sku.lower()]
+            for suffix, box, mask_top_left in config["crops"]:
+                source_name = config.get("alt_sources", {}).get(suffix, config["source"])
+                source_path = RAW / source_name
+                if not source_path.exists():
+                    print(f"Skipping custom {sku}{suffix} (source not found: {source_name})")
+                    continue
+                destination = OUT / f"{sku.lower()}{suffix}"
+                create_custom_square(source_path, box, destination, mask_top_left)
+                print(f"Created custom crop: {destination.name}")
+            continue
+            
         source = RAW / primary_source
         if not source.exists():
             continue
@@ -224,8 +365,9 @@ def main() -> None:
                     second.unlink()
                 print(f"Created exact PDF crop {destination.name} from page {page} ({quadrant})")
 
-    print(f"Created {len(MAPPINGS) + split_count + len(PCL_PAGE_MAP)} clean product images.")
+    print("Regeneration completed successfully.")
 
 
 if __name__ == "__main__":
     main()
+
