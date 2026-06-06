@@ -54,71 +54,74 @@ def detect_bg_color(img: Image.Image) -> tuple[int, int, int]:
         return (246, 244, 239)
     return (r, g, b)
 
-# Helper: Get isolated fixture crop and bounding box
-def isolate_fixture(img: Image.Image, bg_color: tuple[int, int, int]) -> tuple[Image.Image, tuple[int, int, int, int]]:
+# Helper: Isolate fixture with alpha mask (transparency)
+def isolate_fixture_rgba(img: Image.Image, bg_color: tuple[int, int, int]) -> Image.Image:
+    img = img.convert("RGBA")
     w, h = img.size
-    threshold = 15
-    non_bg_pixels = []
+    data = img.getdata()
+    new_data = []
     
-    # Simple bounding box scan
-    for y in range(0, h, 2):
-        for x in range(0, w, 2):
-            pixel = img.getpixel((x, y))
-            dist = abs(pixel[0] - bg_color[0]) + abs(pixel[1] - bg_color[1]) + abs(pixel[2] - bg_color[2])
-            if dist > threshold:
-                non_bg_pixels.append((x, y))
-                
-    if not non_bg_pixels:
-        # Fallback to cropping center 80%
-        margin_x, margin_y = int(w * 0.1), int(h * 0.1)
-        box = (margin_x, margin_y, w - margin_x, h - margin_y)
-    else:
-        xs = [p[0] for p in non_bg_pixels]
-        ys = [p[1] for p in non_bg_pixels]
-        # Expand box slightly for safety
-        box = (max(0, min(xs) - 10), max(0, min(ys) - 10), min(w, max(xs) + 10), min(h, max(ys) + 10))
+    # Use soft thresholds to avoid jagged edges (anti-aliasing)
+    threshold_low = 12
+    threshold_high = 28
+    
+    for item in data:
+        r, g, b, a = item
+        dist = abs(r - bg_color[0]) + abs(g - bg_color[1]) + abs(b - bg_color[2])
+        if dist < threshold_low:
+            alpha = 0
+        elif dist > threshold_high:
+            alpha = 255
+        else:
+            alpha = int((dist - threshold_low) / (threshold_high - threshold_low) * 255)
+        new_data.append((r, g, b, alpha))
         
-    return img.crop(box), box
+    img.putdata(new_data)
+    
+    # Bounding box of non-transparent pixels
+    bbox = img.getbbox()
+    if bbox:
+        pad = 8
+        bbox = (
+            max(0, bbox[0] - pad),
+            max(0, bbox[1] - pad),
+            min(w, bbox[2] + pad),
+            min(h, bbox[3] + pad)
+        )
+        return img.crop(bbox)
+    return img
 
-# Colorize functions
+# Colorize functions preserving alpha mask
 def make_gold(fixture: Image.Image) -> Image.Image:
-    # Convert to gold by shifts
-    gray = ImageOps.grayscale(fixture)
-    # Map intensity to gold: R = Y * 1.18, G = Y * 0.96, B = Y * 0.60
+    r, g, b, a = fixture.split()
+    gray = ImageOps.grayscale(fixture.convert("RGB"))
     gold_data = []
     for Y in gray.getdata():
-        r = min(255, int(Y * 1.18))
-        g = min(255, int(Y * 0.96))
-        b = min(255, int(Y * 0.60))
-        gold_data.append((r, g, b))
-    gold_img = Image.new("RGB", fixture.size)
-    gold_img.putdata(gold_data)
-    return gold_img
+        gold_r = min(255, int(Y * 1.25))
+        gold_g = min(255, int(Y * 1.05))
+        gold_b = min(255, int(Y * 0.65))
+        gold_data.append((gold_r, gold_g, gold_b))
+        
+    gold_rgb = Image.new("RGB", fixture.size)
+    gold_rgb.putdata(gold_data)
+    return Image.merge("RGBA", (gold_rgb.split()[0], gold_rgb.split()[1], gold_rgb.split()[2], a))
 
 def make_chrome(fixture: Image.Image) -> Image.Image:
-    # Chrome is bright, contrasty grayscale
-    gray = ImageOps.grayscale(fixture)
-    enhancer = ImageEnhance.Contrast(gray)
-    contrast_gray = enhancer.enhance(1.4)
-    chrome_img = Image.new("RGB", fixture.size)
-    chrome_data = [(Y, Y, Y) for Y in contrast_gray.getdata()]
-    chrome_img.putdata(chrome_data)
-    return chrome_img
+    r, g, b, a = fixture.split()
+    gray = ImageOps.grayscale(fixture.convert("RGB"))
+    contrast_gray = ImageEnhance.Contrast(gray).enhance(1.45)
+    return Image.merge("RGBA", (contrast_gray, contrast_gray, contrast_gray, a))
 
 def make_black(fixture: Image.Image) -> Image.Image:
-    # Matte black is dark gray/black with high-contrast shadows
-    gray = ImageOps.grayscale(fixture)
-    black_data = []
-    for Y in gray.getdata():
-        # Lower brightness but keep some highlight details
-        val = min(255, int(Y * 0.35))
-        black_data.append((val, val, val))
-    black_img = Image.new("RGB", fixture.size)
-    black_img.putdata(black_data)
-    return black_img
+    r, g, b, a = fixture.split()
+    gray = ImageOps.grayscale(fixture.convert("RGB"))
+    black_data = [min(255, int(Y * 0.32)) for Y in gray.getdata()]
+    black_l = Image.new("L", fixture.size)
+    black_l.putdata(black_data)
+    return Image.merge("RGBA", (black_l, black_l, black_l, a))
 
 # Main processing loop
-print("\nGenerating variant images for all products...")
+print("\nGenerating variant images for all products using transparency masks...")
 base_images = sorted(list(PRODUCTS_DIR.glob("*-1.jpg")))
 print(f"Found {len(base_images)} base products to generate variants for.")
 
@@ -129,19 +132,18 @@ for base_img_path in base_images:
     with Image.open(base_img_path) as img:
         img = img.convert("RGB")
         bg_color = detect_bg_color(img)
-        fixture, box = isolate_fixture(img, bg_color)
+        fixture_rgba = isolate_fixture_rgba(img, bg_color)
         
-        # We will generate 8 variants: finishes x sizes
         finishes = {
-            "premium": fixture,  # Original
-            "gold": make_gold(fixture),
-            "chrome": make_chrome(fixture),
-            "black": make_black(fixture)
+            "premium": fixture_rgba,  # Original
+            "gold": make_gold(fixture_rgba),
+            "chrome": make_chrome(fixture_rgba),
+            "black": make_black(fixture_rgba)
         }
         
         sizes = {
-            "premium": 1000,   # Large
-            "standard": 800    # Medium
+            "premium": 1000,
+            "standard": 800
         }
         
         for finish_name, fixture_img in finishes.items():
@@ -156,7 +158,9 @@ for base_img_path in base_images:
                 canvas = Image.new("RGB", (1200, 1200), bg_color)
                 x = (1200 - scaled_fixture.width) // 2
                 y = (1200 - scaled_fixture.height) // 2
-                canvas.paste(scaled_fixture, (x, y))
+                
+                # Paste using alpha channel as mask to avoid colorizing the background
+                canvas.paste(scaled_fixture, (x, y), mask=scaled_fixture.split()[3])
                 
                 # Save as optimized JPEG
                 canvas.save(dest_path, "JPEG", quality=85, optimize=True)
@@ -165,4 +169,4 @@ for base_img_path in base_images:
     if processed_count % 10 == 0:
         print(f"Processed {processed_count}/{len(base_images)} products...")
 
-print("\nSuccessfully generated all variant images!")
+print("\nSuccessfully generated all variant images with transparency masks!")
