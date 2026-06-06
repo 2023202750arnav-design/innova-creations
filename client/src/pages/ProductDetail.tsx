@@ -23,38 +23,35 @@ export function ProductDetail() {
   const toggleWishlist = useShop((s) => s.toggleWishlist);
   const wishlist = useShop((s) => s.wishlist);
 
-  const [selectedFinish, setSelectedFinish] = useState("");
-  const [selectedSize, setSelectedSize] = useState("");
+  const [selectedFinish, setSelectedFinish] = useState("Premium");
+  const [selectedSize, setSelectedSize] = useState("Premium");
 
   useEffect(() => {
     if (product) {
-      setSelectedFinish(product.finish || "Gold");
-      setSelectedSize(product.variants?.[0]?.value || "Standard");
+      setSelectedFinish("Premium");
+      setSelectedSize("Premium");
     }
   }, [product]);
 
   const handleFinishChange = (finish: string) => {
     setSelectedFinish(finish);
-    if (product && product.images && product.images.length > 1) {
-      if (finish !== product.finish) {
-        setImg(1);
-      } else {
-        setImg(0);
-      }
-    }
+    setImg(0);
   };
 
   const handleSizeChange = (size: string) => {
     setSelectedSize(size);
-    if (product && product.images && product.images.length > 1) {
-      const sizes = product.variants.map((v) => v.value);
-      const sizeIndex = sizes.indexOf(size);
-      if (sizeIndex > 0) {
-        setImg(1);
-      } else {
-        setImg(0);
-      }
+    setImg(0);
+  };
+
+  const getActiveImageUrl = () => {
+    if (!product) return "";
+    if (img > 0 && product.images[img]) {
+      return product.images[img];
     }
+    const sku = (product.sku || product.id || "").toLowerCase();
+    const finish = (selectedFinish || "Premium").toLowerCase();
+    const size = (selectedSize || "Premium").toLowerCase();
+    return `/catalog-products/products/${sku}-${finish}-${size}.jpg`;
   };
 
   const { data: related = [] } = useQuery<Product[]>({
@@ -90,38 +87,51 @@ export function ProductDetail() {
         <div>
           <div className="aspect-square overflow-hidden rounded-lg bg-cream p-4">
             <img
-              src={product.images[img]}
+              src={getActiveImageUrl()}
               className="h-full w-full object-contain transition hover:scale-110"
               alt={product.name}
             />
           </div>
-          <div className="mt-3 flex gap-3">
-            {product.images.map((src, i) => (
-              <button
-                key={src}
-                onClick={() => {
-                  setImg(i);
-                  if (i === 0) {
-                    setSelectedFinish(product.finish || "Gold");
-                    setSelectedSize(product.variants?.[0]?.value || "Standard");
-                  } else if (i === 1) {
-                    const finishes = [product.finish, "Gold", "Chrome", "Black"].filter(Boolean).slice(0, 4);
-                    if (finishes.length > 1) {
-                      setSelectedFinish(finishes[1]);
-                    }
-                    if (product.variants && product.variants.length > 1) {
-                      setSelectedSize(product.variants[1].value);
-                    }
-                  }
-                }}
-                className={`h-20 w-20 overflow-hidden rounded border bg-cream p-1 ${
-                  img === i ? "border-gold border-2" : "border-gold/40"
-                }`}
-                aria-label={`View product image ${i + 1}`}
-              >
-                <img src={src} className="h-full w-full object-contain" alt="" />
-              </button>
-            ))}
+          <div className="mt-3 flex flex-wrap gap-3">
+            {["Premium", "Gold", "Chrome", "Black"].map((finish) => {
+              const sku = (product.sku || product.id || "").toLowerCase();
+              const finishLower = finish.toLowerCase();
+              const thumbUrl = `/catalog-products/products/${sku}-${finishLower}-premium.jpg`;
+              const isSelected = img === 0 && selectedFinish === finish;
+              return (
+                <button
+                  key={finish}
+                  onClick={() => {
+                    setImg(0);
+                    setSelectedFinish(finish);
+                  }}
+                  className={`h-20 w-20 overflow-hidden rounded border bg-cream p-1 ${
+                    isSelected ? "border-gold border-2" : "border-gold/40"
+                  }`}
+                  aria-label={`View ${finish} finish`}
+                >
+                  <img src={thumbUrl} className="h-full w-full object-contain" alt={`${finish} finish`} />
+                </button>
+              );
+            })}
+            {product.images.slice(1).map((src, idx) => {
+              const i = idx + 1;
+              const isSelected = img === i;
+              return (
+                <button
+                  key={src}
+                  onClick={() => {
+                    setImg(i);
+                  }}
+                  className={`h-20 w-20 overflow-hidden rounded border bg-cream p-1 ${
+                    isSelected ? "border-gold border-2" : "border-gold/40"
+                  }`}
+                  aria-label={`View additional image ${i}`}
+                >
+                  <img src={src} className="h-full w-full object-contain" alt={`Additional view ${i}`} />
+                </button>
+              );
+            })}
           </div>
         </div>
         <section>
@@ -146,41 +156,38 @@ export function ProductDetail() {
           <div className="mt-5 grid gap-3">
             <b>Finish/Color</b>
             <div className="flex flex-wrap gap-2">
-              {[product.finish, "Gold", "Chrome", "Black"]
-                .filter(Boolean)
-                .slice(0, 4)
-                .map((x) => {
-                  const isSelected = selectedFinish === x;
-                  return (
-                    <button
-                      onClick={() => handleFinishChange(x)}
-                      className={`rounded border px-4 py-2 transition ${
-                        isSelected
-                          ? "border-gold bg-gold text-white font-semibold shadow-sm"
-                          : "border-gold/50 text-charcoal hover:bg-cream"
-                      }`}
-                      key={x}
-                    >
-                      {x}
-                    </button>
-                  );
-                })}
-            </div>
-            <b>Size/Wattage</b>
-            <div className="flex flex-wrap gap-2">
-              {product.variants.map((v) => {
-                const isSelected = selectedSize === v.value;
+              {["Premium", "Gold", "Chrome", "Black"].map((x) => {
+                const isSelected = selectedFinish === x;
                 return (
                   <button
-                    onClick={() => handleSizeChange(v.value)}
+                    onClick={() => handleFinishChange(x)}
                     className={`rounded border px-4 py-2 transition ${
                       isSelected
                         ? "border-gold bg-gold text-white font-semibold shadow-sm"
                         : "border-gold/50 text-charcoal hover:bg-cream"
                     }`}
-                    key={v.value}
+                    key={x}
                   >
-                    {v.value}
+                    {x}
+                  </button>
+                );
+              })}
+            </div>
+            <b>Size/Wattage</b>
+            <div className="flex flex-wrap gap-2">
+              {["Premium", "Standard"].map((x) => {
+                const isSelected = selectedSize === x;
+                return (
+                  <button
+                    onClick={() => handleSizeChange(x)}
+                    className={`rounded border px-4 py-2 transition ${
+                      isSelected
+                        ? "border-gold bg-gold text-white font-semibold shadow-sm"
+                        : "border-gold/50 text-charcoal hover:bg-cream"
+                    }`}
+                    key={x}
+                  >
+                    {x}
                   </button>
                 );
               })}

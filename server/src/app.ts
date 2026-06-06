@@ -37,7 +37,7 @@ app.use(cookieParser());
 app.use("/api/v1/payment/webhook", express.raw({ type: "application/json" }));
 app.use(express.json({ limit: "1mb" }));
 
-const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 5, standardHeaders: true, legacyHeaders: false });
+const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 100, standardHeaders: true, legacyHeaders: false });
 const accessSecret = process.env.JWT_ACCESS_SECRET || "dev_access_secret";
 const refreshSecret = process.env.JWT_REFRESH_SECRET || "dev_refresh_secret";
 
