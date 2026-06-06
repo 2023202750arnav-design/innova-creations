@@ -12,40 +12,40 @@ PRODUCTS_DIR = ROOT / "client/public/catalog-products/products"
 PRODUCTS_DIR.mkdir(parents=True, exist_ok=True)
 
 # 1. Copy Custom AI Renders (png -> jpg conversion)
-AI_COPIES = [
-    ("innova_wln16_1_1780763080417.png", "innova-wln16-1.jpg"),
-    ("innova_wln16_2_1780763096940.png", "innova-wln16-2.jpg"),
-    ("innova_ncp37_1_1780763112462.png", "innova-ncp37-1.jpg"),
-    ("innova_ncp38_1_1780763142903.png", "innova-ncp38-1.jpg"),
-    ("innova_ncp38_2_1780763158011.png", "innova-ncp38-2.jpg"),
-    ("innova_ncp39_1_1780763174539.png", "innova-ncp39-1.jpg"),
-    ("innova_ncp39_2_1780763192188.png", "innova-ncp39-2.jpg"),
-    ("innova_hln12_1_1780763311249.png", "innova-hln12-1.jpg"),
-    ("innova_hln12_2_1780763326821.png", "innova-hln12-2.jpg"),
-    ("innova_hln12c_1_1780763341740.png", "innova-hln12c-1.jpg"),
-    ("innova_hln12c_2_1780763357864.png", "innova-hln12c-2.jpg"),
-    ("innova_hln1_1_1780764047648.png", "innova-hln1-1.jpg"),
-    ("innova_wln1_1_1780764222698.png", "innova-wln1-1.jpg"),
-    ("innova_pcl9_1_1780764257640.png", "innova-pcl-9-1.jpg"),
-]
+# AI_COPIES = [
+#     ("innova_wln16_1_1780763080417.png", "innova-wln16-1.jpg"),
+#     ("innova_wln16_2_1780763096940.png", "innova-wln16-2.jpg"),
+#     ("innova_ncp37_1_1780763112462.png", "innova-ncp37-1.jpg"),
+#     ("innova_ncp38_1_1780763142903.png", "innova-ncp38-1.jpg"),
+#     ("innova_ncp38_2_1780763158011.png", "innova-ncp38-2.jpg"),
+#     ("innova_ncp39_1_1780763174539.png", "innova-ncp39-1.jpg"),
+#     ("innova_ncp39_2_1780763192188.png", "innova-ncp39-2.jpg"),
+#     ("innova_hln12_1_1780763311249.png", "innova-hln12-1.jpg"),
+#     ("innova_hln12_2_1780763326821.png", "innova-hln12-2.jpg"),
+#     ("innova_hln12c_1_1780763341740.png", "innova-hln12c-1.jpg"),
+#     ("innova_hln12c_2_1780763357864.png", "innova-hln12c-2.jpg"),
+#     ("innova_hln1_1_1780764047648.png", "innova-hln1-1.jpg"),
+#     ("innova_wln1_1_1780764222698.png", "innova-wln1-1.jpg"),
+#     ("innova_pcl9_1_1780764257640.png", "innova-pcl-9-1.jpg"),
+# ]
 
-print("--- STEP 1: Copying premium AI generated images ---")
-for png_name, jpg_name in AI_COPIES:
-    src_path = BRAIN_DIR / png_name
-    if src_path.exists():
-        dest_path = PRODUCTS_DIR / jpg_name
-        with Image.open(src_path) as img:
-            img.convert("RGB").save(dest_path, "JPEG", quality=95)
-        print(f"Applied AI image: {jpg_name}")
-    else:
-        print(f"Warning: AI image {png_name} not found in brain directory")
+print("--- STEP 1: Skipping copy of generic AI generated images to preserve catalog integrity ---")
+# for png_name, jpg_name in AI_COPIES:
+#     src_path = BRAIN_DIR / png_name
+#     if src_path.exists():
+#         dest_path = PRODUCTS_DIR / jpg_name
+#         with Image.open(src_path) as img:
+#             img.convert("RGB").save(dest_path, "JPEG", quality=95)
+#         print(f"Applied AI image: {jpg_name}")
+#     else:
+#         print(f"Warning: AI image {png_name} not found in brain directory")
 
 # Also copy any custom JPG files from the brain directory
-print("\n--- STEP 2: Copying custom JPG files from brain ---")
-for jpg_path in BRAIN_DIR.glob("innova-*.jpg"):
-    dest_path = PRODUCTS_DIR / jpg_path.name
-    shutil.copy(jpg_path, dest_path)
-    print(f"Copied custom JPG: {jpg_path.name}")
+print("\n--- STEP 2: Skipping copy of custom JPG files from brain ---")
+# for jpg_path in BRAIN_DIR.glob("innova-*.jpg"):
+#     dest_path = PRODUCTS_DIR / jpg_path.name
+#     shutil.copy(jpg_path, dest_path)
+#     print(f"Copied custom JPG: {jpg_path.name}")
 
 # Helper: Detect background color dynamically
 def detect_bg_color(img: Image.Image) -> tuple[int, int, int]:
