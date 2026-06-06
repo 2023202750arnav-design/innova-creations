@@ -3,6 +3,8 @@ import { Category, Product } from "./data";
 import { catalogueCategories, catalogueProducts } from "./catalogue";
 
 export const api = axios.create({ baseURL: import.meta.env.VITE_API_URL || "http://localhost:5002/api/v1", withCredentials: true });
+const DEFAULT_PRODUCT_LIMIT = 24;
+const MAX_PRODUCT_LIMIT = 100;
 
 type ApiProduct = Partial<Omit<Product, "category">> & {
   sku?: string;
@@ -69,12 +71,23 @@ export function normalizeCategory(category: any): Category {
   };
 }
 
+const normalizedCatalogueProducts = catalogueProducts.map(normalizeProduct);
+const normalizedCatalogueBySlug = new Map(normalizedCatalogueProducts.map((product) => [product.slug, product]));
+
+function getCappedLimit(limitValue: unknown) {
+  const parsed = Number(limitValue);
+  if (!Number.isFinite(parsed) || parsed <= 0) return DEFAULT_PRODUCT_LIMIT;
+  return Math.min(MAX_PRODUCT_LIMIT, Math.floor(parsed));
+}
+
 export async function fetchProducts(params: Record<string, string | number | boolean | undefined> = {}) {
   try {
-    const { data } = await api.get("/products", { params });
+    const cappedLimit = getCappedLimit(params.limit);
+    const { data } = await api.get("/products", { params: { ...params, limit: cappedLimit } });
     return (data.products ?? data).map(normalizeProduct);
   } catch {
-    let result = [...catalogueProducts];
+    const cappedLimit = getCappedLimit(params.limit);
+    let result = [...normalizedCatalogueProducts];
     if (params.category) result = result.filter((p) => p.category === params.category);
     if (params.search) {
       const search = String(params.search).toLowerCase();
@@ -86,7 +99,7 @@ export async function fetchProducts(params: Record<string, string | number | boo
     if (params.sort === "price_asc") result.sort((a, b) => a.price - b.price);
     else if (params.sort === "price_desc") result.sort((a, b) => b.price - a.price);
     else result.sort((a, b) => Number(b.badges.includes("Best Seller")) - Number(a.badges.includes("Best Seller")) || b.rating - a.rating);
-    return result.slice(0, Number(params.limit || 24)).map(normalizeProduct);
+    return result.slice(0, cappedLimit);
   }
 }
 
@@ -95,8 +108,7 @@ export async function fetchProduct(slug: string) {
     const { data } = await api.get(`/products/${slug}`);
     return normalizeProduct(data.product ?? data);
   } catch {
-    const product = catalogueProducts.find((p) => p.slug === slug);
-    return product ? normalizeProduct(product) : undefined;
+    return normalizedCatalogueBySlug.get(slug);
   }
 }
 

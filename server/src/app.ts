@@ -71,6 +71,31 @@ function ok(res: express.Response, data: unknown) { return res.json(data); }
 const api = express.Router();
 
 const productInclude = { category: { select: { slug: true, name: true } } };
+const DEFAULT_PAGE = 1;
+const DEFAULT_LIMIT = 24;
+const MAX_LIMIT = 100;
+const ADMIN_DEFAULT_LIMIT = 25;
+const ADMIN_MAX_LIMIT = 100;
+const fallbackProductBySku = new Map(
+  catalogueProducts
+    .filter((product) => Boolean(product.sku))
+    .map((product) => [String(product.sku), product]),
+);
+const fallbackProductById = new Map(catalogueProducts.map((product) => [String(product.id), product]));
+
+function parsePositiveInt(value: unknown, fallback: number) {
+  const parsed = Number(value);
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
+}
+
+function parsePagination(query: express.Request["query"], options?: { defaultLimit?: number; maxLimit?: number }) {
+  const page = parsePositiveInt(query.page, DEFAULT_PAGE);
+  const defaultLimit = options?.defaultLimit ?? DEFAULT_LIMIT;
+  const maxLimit = options?.maxLimit ?? MAX_LIMIT;
+  const requestedLimit = parsePositiveInt(query.limit, defaultLimit);
+  const limit = Math.min(requestedLimit, maxLimit);
+  return { page, limit };
+}
 
 function fallbackProducts(query: express.Request["query"]) {
   let result = [...catalogueProducts];
@@ -181,7 +206,7 @@ api.get("/auth/me", auth, async (req, res, next) => {
 
 api.get("/products",
   query("page").optional().isInt({ min: 1 }),
-  query("limit").optional().isInt({ min: 1, max: 200 }),
+  query("limit").optional().isInt({ min: 1, max: MAX_LIMIT }),
   validate,
   async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
@@ -196,8 +221,7 @@ api.get("/products",
       if (featured === "true") where.isFeatured = true;
       if (new_arrival === "true") where.isNewArrival = true;
 
-      const page = Number(req.query.page || 1);
-      const limit = Number(req.query.limit || 24);
+      const { page, limit } = parsePagination(req.query);
       const orderBy: any =
         sort === "price_asc" ? { price: "asc" } :
         sort === "price_desc" ? { price: "desc" } :
@@ -217,8 +241,7 @@ api.get("/products",
 
       ok(res, { total, page, products: dbProducts });
     } catch {
-      const page = Number(req.query.page || 1);
-      const limit = Number(req.query.limit || 24);
+      const { page, limit } = parsePagination(req.query);
       const result = fallbackProducts(req.query);
       ok(res, { total: result.length, page, products: result.slice((page - 1) * limit, page * limit) });
     }
@@ -304,10 +327,23 @@ api.post(
     try {
       const requestedItems = req.body.items as Array<{ productId?: string; sku?: string; quantity?: number }>;
       const quantities = requestedItems.map((item) => Math.max(1, Math.min(25, Number(item.quantity || 1))));
-      const products = await Promise.all(requestedItems.map((item) =>
+      const skuIds = [...new Set(requestedItems.map((item) => item.sku).filter((sku): sku is string => Boolean(sku)))];
+      const productIds = [...new Set(requestedItems.map((item) => item.productId).filter((id): id is string => Boolean(id)).map(String))];
+      const whereOr: Array<Record<string, unknown>> = [];
+      if (skuIds.length) whereOr.push({ sku: { in: skuIds } });
+      if (productIds.length) whereOr.push({ id: { in: productIds } });
+      if (!whereOr.length) return res.status(422).json({ message: "One or more products are unavailable" });
+      const fetchedProducts = await prisma.product.findMany({ where: { OR: whereOr } });
+      const productsBySku = new Map(
+        fetchedProducts
+          .filter((product) => Boolean(product.sku))
+          .map((product) => [String(product.sku), product]),
+      );
+      const productsById = new Map(fetchedProducts.map((product) => [product.id, product]));
+      const products = requestedItems.map((item) => (
         item.sku
-          ? prisma.product.findUnique({ where: { sku: item.sku } })
-          : prisma.product.findUnique({ where: { id: String(item.productId) } }),
+          ? productsBySku.get(String(item.sku))
+          : productsById.get(String(item.productId))
       ));
       if (products.some((product) => !product)) return res.status(422).json({ message: "One or more products are unavailable" });
       if (products.some((product, index) => product!.stockQty < quantities[index])) return res.status(409).json({ message: "Requested quantity is no longer in stock" });
@@ -353,12 +389,11 @@ api.post(
       try {
         const requestedItems = req.body.items as Array<{ productId?: string; sku?: string; quantity?: number }>;
         const quantities = requestedItems.map((item) => Math.max(1, Math.min(25, Number(item.quantity || 1))));
-        const products = requestedItems.map((item) => {
-          const p = item.sku
-            ? catalogueProducts.find((x) => x.sku === item.sku)
-            : catalogueProducts.find((x) => x.id === item.productId);
-          return p;
-        });
+        const products = requestedItems.map((item) => (
+          item.sku
+            ? fallbackProductBySku.get(String(item.sku))
+            : fallbackProductById.get(String(item.productId))
+        ));
         if (products.some((product) => !product)) return res.status(422).json({ message: "One or more products are unavailable" });
 
         const subtotal = products.reduce((sum, product, index) => sum + product!.price * quantities[index], 0);
@@ -437,9 +472,31 @@ api.put("/orders/:orderId/cancel", auth, async (req, res, next) => {
     ok(res, { order: updated });
   } catch (error) { next(error); }
 });
-api.get("/admin/orders", auth, admin, async (_req, res, next) => {
-  try { ok(res, { orders: await prisma.order.findMany({ include: { items: true, user: true }, orderBy: { createdAt: "desc" } }) }); } catch (error) { next(error); }
-});
+api.get(
+  "/admin/orders",
+  auth,
+  admin,
+  query("page").optional().isInt({ min: 1 }),
+  query("limit").optional().isInt({ min: 1, max: ADMIN_MAX_LIMIT }),
+  validate,
+  async (req, res, next) => {
+    try {
+      const { page, limit } = parsePagination(req.query, { defaultLimit: ADMIN_DEFAULT_LIMIT, maxLimit: ADMIN_MAX_LIMIT });
+      const [total, orders] = await prisma.$transaction([
+        prisma.order.count(),
+        prisma.order.findMany({
+          include: { items: true, user: true },
+          orderBy: { createdAt: "desc" },
+          skip: (page - 1) * limit,
+          take: limit,
+        }),
+      ]);
+      ok(res, { total, page, limit, orders });
+    } catch (error) {
+      next(error);
+    }
+  },
+);
 api.put("/admin/orders/:orderId/status", auth, admin, body("status").isIn(["PENDING", "CONFIRMED", "PROCESSING", "SHIPPED", "DELIVERED", "CANCELLED", "REFUNDED"]), validate, async (req, res, next) => {
   try {
     const order = await prisma.order.update({ where: { id: req.params.orderId }, data: { status: req.body.status, statusHistory: { create: { status: req.body.status } } } });
@@ -462,9 +519,31 @@ api.post("/products/:productId/reviews", auth, body("rating").isInt({ min: 1, ma
 api.put("/reviews/:reviewId", auth, (req, res) => ok(res, { id: req.params.reviewId, ...req.body }));
 api.delete("/reviews/:reviewId", auth, (req, res) => ok(res, { deleted: req.params.reviewId }));
 
-api.get("/admin/users", auth, admin, async (_req, res, next) => {
-  try { ok(res, { users: await prisma.user.findMany({ select: { id: true, email: true, name: true, phone: true, role: true, isBlocked: true, createdAt: true } }) }); } catch (error) { next(error); }
-});
+api.get(
+  "/admin/users",
+  auth,
+  admin,
+  query("page").optional().isInt({ min: 1 }),
+  query("limit").optional().isInt({ min: 1, max: ADMIN_MAX_LIMIT }),
+  validate,
+  async (req, res, next) => {
+    try {
+      const { page, limit } = parsePagination(req.query, { defaultLimit: ADMIN_DEFAULT_LIMIT, maxLimit: ADMIN_MAX_LIMIT });
+      const [total, users] = await prisma.$transaction([
+        prisma.user.count(),
+        prisma.user.findMany({
+          select: { id: true, email: true, name: true, phone: true, role: true, isBlocked: true, createdAt: true },
+          orderBy: { createdAt: "desc" },
+          skip: (page - 1) * limit,
+          take: limit,
+        }),
+      ]);
+      ok(res, { total, page, limit, users });
+    } catch (error) {
+      next(error);
+    }
+  },
+);
 api.get("/admin/users/:userId", auth, admin, async (req, res, next) => {
   try { ok(res, { user: await prisma.user.findUnique({ where: { id: req.params.userId }, include: { orders: true, addresses: true } }) }); } catch (error) { next(error); }
 });
