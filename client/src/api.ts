@@ -2,7 +2,7 @@ import axios from "axios";
 import { Category, Product } from "./data";
 import { catalogueCategories, catalogueProducts } from "./catalogue";
 
-export const api = axios.create({ baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1", withCredentials: true });
+export const api = axios.create({ baseURL: import.meta.env.VITE_API_URL || "http://localhost:5002/api/v1", withCredentials: true });
 
 type ApiProduct = Partial<Omit<Product, "category">> & {
   sku?: string;
