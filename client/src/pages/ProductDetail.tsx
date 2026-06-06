@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
@@ -22,6 +22,16 @@ export function ProductDetail() {
   const addCart = useShop((s) => s.addCart);
   const toggleWishlist = useShop((s) => s.toggleWishlist);
   const wishlist = useShop((s) => s.wishlist);
+
+  const [selectedFinish, setSelectedFinish] = useState("");
+  const [selectedSize, setSelectedSize] = useState("");
+
+  useEffect(() => {
+    if (product) {
+      setSelectedFinish(product.finish || "Gold");
+      setSelectedSize(product.variants?.[0]?.value || "Standard");
+    }
+  }, [product]);
 
   const { data: related = [] } = useQuery<Product[]>({
     queryKey: ["related", product?.category],
@@ -101,19 +111,41 @@ export function ProductDetail() {
               {[product.finish, "Gold", "Chrome", "Black"]
                 .filter(Boolean)
                 .slice(0, 4)
-                .map((x) => (
-                  <button className="rounded border border-gold px-4 py-2 hover:bg-cream transition" key={x}>
-                    {x}
-                  </button>
-                ))}
+                .map((x) => {
+                  const isSelected = selectedFinish === x;
+                  return (
+                    <button
+                      onClick={() => setSelectedFinish(x)}
+                      className={`rounded border px-4 py-2 transition ${
+                        isSelected
+                          ? "border-gold bg-gold text-white font-semibold shadow-sm"
+                          : "border-gold/50 text-charcoal hover:bg-cream"
+                      }`}
+                      key={x}
+                    >
+                      {x}
+                    </button>
+                  );
+                })}
             </div>
             <b>Size/Wattage</b>
             <div className="flex flex-wrap gap-2">
-              {product.variants.map((v) => (
-                <button className="rounded border border-gold px-4 py-2 hover:bg-cream transition" key={v.value}>
-                  {v.value}
-                </button>
-              ))}
+              {product.variants.map((v) => {
+                const isSelected = selectedSize === v.value;
+                return (
+                  <button
+                    onClick={() => setSelectedSize(v.value)}
+                    className={`rounded border px-4 py-2 transition ${
+                      isSelected
+                        ? "border-gold bg-gold text-white font-semibold shadow-sm"
+                        : "border-gold/50 text-charcoal hover:bg-cream"
+                    }`}
+                    key={v.value}
+                  >
+                    {v.value}
+                  </button>
+                );
+              })}
             </div>
           </div>
           <p
@@ -144,8 +176,9 @@ export function ProductDetail() {
             <button
               data-testid="product-add-cart"
               onClick={() => {
-                addCart(product, qty);
-                toast.success("Added to cart");
+                const variantLabel = [selectedFinish, selectedSize].filter(Boolean).join(" / ");
+                addCart(product, qty, variantLabel);
+                toast.success(`Added ${variantLabel} to cart`);
               }}
               className="gold-btn rounded px-6 py-3 font-semibold"
             >
@@ -168,7 +201,10 @@ export function ProductDetail() {
             <Link
               data-testid="product-buy-now"
               to="/checkout"
-              onClick={() => addCart(product, qty)}
+              onClick={() => {
+                const variantLabel = [selectedFinish, selectedSize].filter(Boolean).join(" / ");
+                addCart(product, qty, variantLabel);
+              }}
               className="rounded bg-navy px-6 py-3 text-center text-white hover:bg-navy/90 transition"
             >
               Buy Now

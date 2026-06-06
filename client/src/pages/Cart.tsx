@@ -22,49 +22,52 @@ export function CartPage() {
               Your cart is waiting for something beautiful.
             </p>
           )}
-          {cart.map((line) => (
-            <div
-              className="grid gap-4 rounded bg-white p-4 border border-gold/10 sm:grid-cols-[100px_1fr_auto] items-center"
-              key={line.product.id}
-            >
-              <img
-                src={line.product.images[0]}
-                className="h-24 w-24 rounded object-cover mx-auto"
-                alt={line.product.name}
-              />
-              <div className="text-center sm:text-left">
-                <h3 className="font-display text-2xl">{line.product.name}</h3>
-                <p className="text-mid text-sm">
-                  {line.product.finish} / {line.product.material}
-                </p>
-                <b className="text-charcoal mt-1 block">{inr.format(line.product.price)}</b>
+          {cart.map((line) => {
+            const lineKey = line.product.id + (line.variant ? "-" + line.variant : "");
+            return (
+              <div
+                className="grid gap-4 rounded bg-white p-4 border border-gold/10 sm:grid-cols-[100px_1fr_auto] items-center"
+                key={lineKey}
+              >
+                <img
+                  src={line.product.images[0]}
+                  className="h-24 w-24 rounded object-cover mx-auto"
+                  alt={line.product.name}
+                />
+                <div className="text-center sm:text-left">
+                  <h3 className="font-display text-2xl">{line.product.name}</h3>
+                  <p className="text-mid text-sm text-gold-dark">
+                    {line.variant || `${line.product.finish} / ${line.product.material}`}
+                  </p>
+                  <b className="text-charcoal mt-1 block">{inr.format(line.product.price)}</b>
+                </div>
+                <div className="flex items-center justify-center gap-3">
+                  <button
+                    aria-label="Decrease"
+                    className="p-1.5 border border-gold/30 rounded-full hover:bg-cream transition"
+                    onClick={() => updateQty(line.product.id, line.qty - 1, line.variant)}
+                  >
+                    <Minus size={16} />
+                  </button>
+                  <span className="w-6 text-center font-semibold">{line.qty}</span>
+                  <button
+                    aria-label="Increase"
+                    className="p-1.5 border border-gold/30 rounded-full hover:bg-cream transition"
+                    onClick={() => updateQty(line.product.id, line.qty + 1, line.variant)}
+                  >
+                    <Plus size={16} />
+                  </button>
+                  <button
+                    aria-label="Remove"
+                    className="p-1.5 ml-2 text-burgundy hover:bg-cream rounded transition"
+                    onClick={() => removeCart(line.product.id, line.variant)}
+                  >
+                    <Trash2 size={18} />
+                  </button>
+                </div>
               </div>
-              <div className="flex items-center justify-center gap-3">
-                <button
-                  aria-label="Decrease"
-                  className="p-1.5 border border-gold/30 rounded-full hover:bg-cream transition"
-                  onClick={() => updateQty(line.product.id, line.qty - 1)}
-                >
-                  <Minus size={16} />
-                </button>
-                <span className="w-6 text-center font-semibold">{line.qty}</span>
-                <button
-                  aria-label="Increase"
-                  className="p-1.5 border border-gold/30 rounded-full hover:bg-cream transition"
-                  onClick={() => updateQty(line.product.id, line.qty + 1)}
-                >
-                  <Plus size={16} />
-                </button>
-                <button
-                  aria-label="Remove"
-                  className="p-1.5 ml-2 text-burgundy hover:bg-cream rounded transition"
-                  onClick={() => removeCart(line.product.id)}
-                >
-                  <Trash2 size={18} />
-                </button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
         <Summary subtotal={subtotal} discount={discount} shipping={shipping} tax={tax} />
       </div>

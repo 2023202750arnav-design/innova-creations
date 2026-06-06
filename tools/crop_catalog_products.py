@@ -183,26 +183,41 @@ def main() -> None:
             continue
         with Image.open(source) as image:
             width, height = image.size
-        usable_bottom = int(height * (0.9 if category == "led-pendant-ceiling" else 0.72))
-        overlap = max(0, int(width * 0.015))
-        create_square(source, (0, 0, width // 2 + overlap, usable_bottom), OUT / f"{sku.lower()}-1.jpg")
-        create_square(source, (width // 2 - overlap, 0, width, usable_bottom), OUT / f"{sku.lower()}-2.jpg")
-        split_count += 2
-        print(f"Split {primary_source} into {sku.lower()}-1.jpg and {sku.lower()}-2.jpg")
-
-    with tempfile.TemporaryDirectory(prefix="innova-catalogue-") as temp:
-        temp_dir = Path(temp)
-        rendered_pages: dict[int, Path] = {}
-        for sku, (page, quadrant) in PCL_PAGE_MAP.items():
-            if page not in rendered_pages:
-                rendered_pages[page] = render_pdf_page(page, temp_dir)
-            destination = OUT / f"{sku.lower()}-1.jpg"
-            create_quadrant_product(rendered_pages[page], quadrant, destination)
-            # A catalogue tile is one verified product view. Remove stale guessed second views.
+        
+        if category in {"crystal-chandeliers", "grand-chandeliers"}:
+            # These are large individual chandeliers. Do not split them down the middle!
+            # Crop the entire page/image to keep it intact, removing only bottom margins.
+            usable_bottom = int(height * 0.94)
+            create_square(source, (0, 0, width, usable_bottom), OUT / f"{sku.lower()}-1.jpg")
+            # Remove any stale -2.jpg if it exists
             second = OUT / f"{sku.lower()}-2.jpg"
             if second.exists():
                 second.unlink()
-            print(f"Created exact PDF crop {destination.name} from page {page} ({quadrant})")
+            print(f"Cropped entire image {primary_source} into {sku.lower()}-1.jpg (no split)")
+        else:
+            usable_bottom = int(height * 0.9)
+            overlap = max(0, int(width * 0.015))
+            create_square(source, (0, 0, width // 2 + overlap, usable_bottom), OUT / f"{sku.lower()}-1.jpg")
+            create_square(source, (width // 2 - overlap, 0, width, usable_bottom), OUT / f"{sku.lower()}-2.jpg")
+            split_count += 2
+            print(f"Split {primary_source} into {sku.lower()}-1.jpg and {sku.lower()}-2.jpg")
+
+    if not shutil.which("pdftoppm"):
+        print("pdftoppm not found, skipping PDF quadrant rendering (existing files will be kept)")
+    else:
+        with tempfile.TemporaryDirectory(prefix="innova-catalogue-") as temp:
+            temp_dir = Path(temp)
+            rendered_pages: dict[int, Path] = {}
+            for sku, (page, quadrant) in PCL_PAGE_MAP.items():
+                if page not in rendered_pages:
+                    rendered_pages[page] = render_pdf_page(page, temp_dir)
+                destination = OUT / f"{sku.lower()}-1.jpg"
+                create_quadrant_product(rendered_pages[page], quadrant, destination)
+                # A catalogue tile is one verified product view. Remove stale guessed second views.
+                second = OUT / f"{sku.lower()}-2.jpg"
+                if second.exists():
+                    second.unlink()
+                print(f"Created exact PDF crop {destination.name} from page {page} ({quadrant})")
 
     print(f"Created {len(MAPPINGS) + split_count + len(PCL_PAGE_MAP)} clean product images.")
 
