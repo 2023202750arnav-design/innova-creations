@@ -364,7 +364,7 @@ export const catalogueProducts: Product[] = [
     "description": "<p>Black Fabric Drum Shade Wall Light is part of the Innova Creations catalogue.</p><ul><li>SKU: Innova-WLN9</li><li>Material: Metal, Fabric Shade</li><li>Finish: Black</li><li>GST: 18%</li></ul>",
     "price": 3450,
     "compareAtPrice": 4210,
-    "rating": 4.0,
+    "rating": 4,
     "reviews": 24,
     "stock": 16,
     "badges": [
@@ -402,7 +402,7 @@ export const catalogueProducts: Product[] = [
     "description": "<p>Triple Smoked Glass Globe Wall Sconce is part of the Innova Creations catalogue.</p><ul><li>SKU: Innova-WLN10</li><li>Material: Glass</li><li>Finish: Premium</li><li>GST: 18%</li></ul>",
     "price": 4480,
     "compareAtPrice": 5470,
-    "rating": 4.0,
+    "rating": 4,
     "reviews": 23,
     "stock": 20,
     "badges": [
@@ -1126,7 +1126,7 @@ export const catalogueProducts: Product[] = [
     "description": "<p>Matte Black Globe on Slim Rod Wall Light is part of the Innova Creations catalogue.</p><ul><li>SKU: Innova-WLN29</li><li>Material: Metal, Glass</li><li>Finish: Matte Black</li><li>GST: 18%</li></ul>",
     "price": 3840,
     "compareAtPrice": 4680,
-    "rating": 4.0,
+    "rating": 4,
     "reviews": 33,
     "stock": 19,
     "badges": [
@@ -1584,7 +1584,7 @@ export const catalogueProducts: Product[] = [
     "description": "<p>LED Ring Black Ceiling Pendant Light is part of the Innova Creations catalogue.</p><ul><li>SKU: Innova-HLN2</li><li>Material: Metal</li><li>Finish: Black</li><li>GST: 18%</li></ul>",
     "price": 11200,
     "compareAtPrice": 13660,
-    "rating": 4.0,
+    "rating": 4,
     "reviews": 13,
     "stock": 14,
     "badges": [
@@ -2041,7 +2041,7 @@ export const catalogueProducts: Product[] = [
     "description": "<p>Botanical Petal Ceiling Pendant Light is part of the Innova Creations catalogue.</p><ul><li>SKU: Innova-HLN13</li><li>Material: Lighting Metal</li><li>Finish: Premium</li><li>GST: 18%</li></ul>",
     "price": 13950,
     "compareAtPrice": 17020,
-    "rating": 4.0,
+    "rating": 4,
     "reviews": 8,
     "stock": 12,
     "badges": [
@@ -2396,8 +2396,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Rose Gold",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-9-1.jpg",
-      "/catalog-products/products/innova-pcl-9-2.jpg"
+      "/catalog-products/products/innova-pcl-9-1.jpg"
     ],
     "variants": [
       {
@@ -2435,8 +2434,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Black",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-10-1.jpg",
-      "/catalog-products/products/innova-pcl-10-2.jpg"
+      "/catalog-products/products/innova-pcl-10-1.jpg"
     ],
     "variants": [
       {
@@ -2474,8 +2472,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Gold",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-11-1.jpg",
-      "/catalog-products/products/innova-pcl-11-2.jpg"
+      "/catalog-products/products/innova-pcl-11-1.jpg"
     ],
     "variants": [
       {
@@ -2513,8 +2510,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Matte Black",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-12-1.jpg",
-      "/catalog-products/products/innova-pcl-12-2.jpg"
+      "/catalog-products/products/innova-pcl-12-1.jpg"
     ],
     "variants": [
       {
@@ -2552,8 +2548,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Black",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-13-1.jpg",
-      "/catalog-products/products/innova-pcl-13-2.jpg"
+      "/catalog-products/products/innova-pcl-13-1.jpg"
     ],
     "variants": [
       {
@@ -2591,8 +2586,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Gold",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-26-1.jpg",
-      "/catalog-products/products/innova-pcl-26-2.jpg"
+      "/catalog-products/products/innova-pcl-26-1.jpg"
     ],
     "variants": [
       {
@@ -2630,8 +2624,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Black",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-27-1.jpg",
-      "/catalog-products/products/innova-pcl-27-2.jpg"
+      "/catalog-products/products/innova-pcl-27-1.jpg"
     ],
     "variants": [
       {
@@ -2669,8 +2662,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Gold",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-28-1.jpg",
-      "/catalog-products/products/innova-pcl-28-2.jpg"
+      "/catalog-products/products/innova-pcl-28-1.jpg"
     ],
     "variants": [
       {
@@ -2708,8 +2700,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Gold",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-29-1.jpg",
-      "/catalog-products/products/innova-pcl-29-2.jpg"
+      "/catalog-products/products/innova-pcl-29-1.jpg"
     ],
     "variants": [
       {
@@ -2747,8 +2738,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Premium",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-46-1.jpg",
-      "/catalog-products/products/innova-pcl-46-2.jpg"
+      "/catalog-products/products/innova-pcl-46-1.jpg"
     ],
     "variants": [
       {
@@ -2786,8 +2776,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Black",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-47-1.jpg",
-      "/catalog-products/products/innova-pcl-47-2.jpg"
+      "/catalog-products/products/innova-pcl-47-1.jpg"
     ],
     "variants": [
       {
@@ -2825,8 +2814,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Premium",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-48-1.jpg",
-      "/catalog-products/products/innova-pcl-48-2.jpg"
+      "/catalog-products/products/innova-pcl-48-1.jpg"
     ],
     "variants": [
       {
@@ -2864,8 +2852,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Grey",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-49-1.jpg",
-      "/catalog-products/products/innova-pcl-49-2.jpg"
+      "/catalog-products/products/innova-pcl-49-1.jpg"
     ],
     "variants": [
       {
@@ -2903,8 +2890,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Chrome",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-66-1.jpg",
-      "/catalog-products/products/innova-pcl-66-2.jpg"
+      "/catalog-products/products/innova-pcl-66-1.jpg"
     ],
     "variants": [
       {
@@ -2943,8 +2929,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Gold",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-67-1.jpg",
-      "/catalog-products/products/innova-pcl-67-2.jpg"
+      "/catalog-products/products/innova-pcl-67-1.jpg"
     ],
     "variants": [
       {
@@ -2982,8 +2967,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Chrome",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-68-1.jpg",
-      "/catalog-products/products/innova-pcl-68-2.jpg"
+      "/catalog-products/products/innova-pcl-68-1.jpg"
     ],
     "variants": [
       {
@@ -3021,8 +3005,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Premium",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-69-1.jpg",
-      "/catalog-products/products/innova-pcl-69-2.jpg"
+      "/catalog-products/products/innova-pcl-69-1.jpg"
     ],
     "variants": [
       {
@@ -3060,8 +3043,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Gold",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-70-1.jpg",
-      "/catalog-products/products/innova-pcl-70-2.jpg"
+      "/catalog-products/products/innova-pcl-70-1.jpg"
     ],
     "variants": [
       {
@@ -3099,8 +3081,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Premium",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-71-1.jpg",
-      "/catalog-products/products/innova-pcl-71-2.jpg"
+      "/catalog-products/products/innova-pcl-71-1.jpg"
     ],
     "variants": [
       {
@@ -3138,8 +3119,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Premium",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-72-1.jpg",
-      "/catalog-products/products/innova-pcl-72-2.jpg"
+      "/catalog-products/products/innova-pcl-72-1.jpg"
     ],
     "variants": [
       {
@@ -3177,8 +3157,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Gold",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-73-1.jpg",
-      "/catalog-products/products/innova-pcl-73-2.jpg"
+      "/catalog-products/products/innova-pcl-73-1.jpg"
     ],
     "variants": [
       {
@@ -3216,8 +3195,7 @@ export const catalogueProducts: Product[] = [
     "finish": "White",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-94-1.jpg",
-      "/catalog-products/products/innova-pcl-94-2.jpg"
+      "/catalog-products/products/innova-pcl-94-1.jpg"
     ],
     "variants": [
       {
@@ -3255,8 +3233,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Black",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-95-1.jpg",
-      "/catalog-products/products/innova-pcl-95-2.jpg"
+      "/catalog-products/products/innova-pcl-95-1.jpg"
     ],
     "variants": [
       {
@@ -3294,8 +3271,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Rose Gold",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-96-1.jpg",
-      "/catalog-products/products/innova-pcl-96-2.jpg"
+      "/catalog-products/products/innova-pcl-96-1.jpg"
     ],
     "variants": [
       {
@@ -3333,8 +3309,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Premium",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-97-1.jpg",
-      "/catalog-products/products/innova-pcl-97-2.jpg"
+      "/catalog-products/products/innova-pcl-97-1.jpg"
     ],
     "variants": [
       {
@@ -3372,8 +3347,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Gold",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-118-1.jpg",
-      "/catalog-products/products/innova-pcl-118-2.jpg"
+      "/catalog-products/products/innova-pcl-118-1.jpg"
     ],
     "variants": [
       {
@@ -3411,8 +3385,7 @@ export const catalogueProducts: Product[] = [
     "finish": "White",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-119-1.jpg",
-      "/catalog-products/products/innova-pcl-119-2.jpg"
+      "/catalog-products/products/innova-pcl-119-1.jpg"
     ],
     "variants": [
       {
@@ -3450,8 +3423,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Gold",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-120-1.jpg",
-      "/catalog-products/products/innova-pcl-120-2.jpg"
+      "/catalog-products/products/innova-pcl-120-1.jpg"
     ],
     "variants": [
       {
@@ -3490,8 +3462,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Gold",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-121-1.jpg",
-      "/catalog-products/products/innova-pcl-121-2.jpg"
+      "/catalog-products/products/innova-pcl-121-1.jpg"
     ],
     "variants": [
       {
@@ -3529,8 +3500,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Chrome",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-130-1.jpg",
-      "/catalog-products/products/innova-pcl-130-2.jpg"
+      "/catalog-products/products/innova-pcl-130-1.jpg"
     ],
     "variants": [
       {
@@ -3568,8 +3538,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Silver",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-131-1.jpg",
-      "/catalog-products/products/innova-pcl-131-2.jpg"
+      "/catalog-products/products/innova-pcl-131-1.jpg"
     ],
     "variants": [
       {
@@ -3607,8 +3576,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Black",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-132-1.jpg",
-      "/catalog-products/products/innova-pcl-132-2.jpg"
+      "/catalog-products/products/innova-pcl-132-1.jpg"
     ],
     "variants": [
       {
@@ -3646,8 +3614,7 @@ export const catalogueProducts: Product[] = [
     "finish": "Chrome",
     "room": "Indoor",
     "images": [
-      "/catalog-products/products/innova-pcl-133-1.jpg",
-      "/catalog-products/products/innova-pcl-133-2.jpg"
+      "/catalog-products/products/innova-pcl-133-1.jpg"
     ],
     "variants": [
       {
@@ -3674,7 +3641,7 @@ export const catalogueProducts: Product[] = [
     "description": "<p>Crystal Wave Flush Ceiling Panel is part of the Innova Creations catalogue.</p><ul><li>SKU: Innova-NCP37</li><li>Material: K9 Crystal and Metal Frame</li><li>Finish: Premium</li><li>GST: 18%</li><li>Dimensions: 12\"x36\"x12\"(H)</li></ul>",
     "price": 42880,
     "compareAtPrice": 49300,
-    "rating": 5.0,
+    "rating": 5,
     "reviews": 11,
     "stock": 5,
     "badges": [
@@ -3788,7 +3755,7 @@ export const catalogueProducts: Product[] = [
     "description": "<p>Crystal Rain Spiral Drop Chandelier is part of the Innova Creations catalogue.</p><ul><li>SKU: Innova-NCP40</li><li>Material: K9 Crystal and Metal Frame</li><li>Finish: Premium</li><li>GST: 18%</li><li>Dimensions: 18\"(D)x8ft(H)</li></ul>",
     "price": 42880,
     "compareAtPrice": 49300,
-    "rating": 5.0,
+    "rating": 5,
     "reviews": 5,
     "stock": 5,
     "badges": [
@@ -4056,7 +4023,7 @@ export const catalogueProducts: Product[] = [
     "description": "<p>Innova Vermont - 65-arm Crystal Grand Chandelier is part of the Innova Creations catalogue.</p><ul><li>SKU: Innova-Vermont-01</li><li>Material: K9 Crystal and Metal Frame</li><li>Finish: Premium</li><li>GST: 18%</li><li>Dimensions: H:240cm x W:170cm</li></ul>",
     "price": 632800,
     "compareAtPrice": 708700,
-    "rating": 5.0,
+    "rating": 5,
     "reviews": 8,
     "stock": 2,
     "badges": [
